@@ -194,11 +194,11 @@ namespace DataSorter
                 meanH[currentMatrixNumber] = 0;
                 for (int i = 0; i < matriceSize; i++)
                 {
-                    meanH[currentMatrixNumber] += i*functionOfDeltaHistogram[i, currentMatrixNumber]/255.0;
+                    meanH[currentMatrixNumber] += i * functionOfDeltaHistogram[i, currentMatrixNumber];
                 }
                 //probability value must be from 0 to 1 
                 //meanH[currentMatrixNumber] /= matricesSum[currentMatrixNumber];
-                meanH[currentMatrixNumber] /= matriceSize;
+                meanH[currentMatrixNumber] /= 255.0;
             }
             return meanH;
         }
@@ -244,7 +244,14 @@ namespace DataSorter
                 for (int i = 0; i < matriceSize; i++)
                     for (int j = i; j < matriceSize; j++)
                     {
-                        functionOfDeltaHistogram[Math.Abs(i - j), currentMatrixNumber] += cooccurenceMatrices[currentMatrixNumber][i, j] + cooccurenceMatrices[currentMatrixNumber][j, i];
+                        if (i != j)
+                        {
+                            functionOfDeltaHistogram[Math.Abs(i - j), currentMatrixNumber] += cooccurenceMatrices[currentMatrixNumber][i, j] + cooccurenceMatrices[currentMatrixNumber][j, i];
+                        }
+                        else
+                        {
+                            functionOfDeltaHistogram[Math.Abs(i - j), currentMatrixNumber] += cooccurenceMatrices[currentMatrixNumber][i, i];
+                        }
                     }
             }
             return true;
